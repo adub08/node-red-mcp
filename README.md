@@ -222,6 +222,7 @@ If `config.json` already has `nodeRedTokenEnc` and the key is missing or wrong, 
 - Default **read-only mode** is enabled on first install
 - Write tools (`update-flows`, `inject`, etc.) grant Node-RED editor-level access
 - Do **not** trust `X-Forwarded-For` — peer address only
+- Security events (IP denials, wrong secret path, CF JWT failures) and errors are written to **stdout** (`docker logs`) as `[security] …` / `[error] …`
 
 ## Environment variables
 
