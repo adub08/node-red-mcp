@@ -1,16 +1,15 @@
-# Production (Linux): macvlan — container owns a LAN IP, clients connect directly.
-# req.socket.remoteAddress is the real client LAN address (no Docker NAT).
+# Production (Linux): join an EXISTING macvlan network (e.g. the one Node-RED
+# already uses). Use this instead of docker-compose.macvlan.yml when Docker
+# reports "Pool overlaps with other one on this address space" — that error
+# means a macvlan network for this subnet already exists, so join it rather
+# than creating a second one.
 #
-# Not for Docker Desktop. Requires an unused static IP on your LAN.
+#   1. Find the network name:  docker network ls   (driver "macvlan")
+#   2. Set MACVLAN_NETWORK to that name, MACVLAN_IP to a free IP on its subnet
+#   3. docker compose -f docker-compose.macvlan-external.yml up -d --build
 #
-# This file CREATES a new macvlan network. If a macvlan network for your subnet
-# already exists (e.g. Node-RED's), Docker fails with "Pool overlaps with other
-# one on this address space" — use docker-compose.macvlan-external.yml to JOIN
-# the existing network instead.
-#
-#   cp .env.example .env   # set MACVLAN_* and MCP_PUBLIC_HOST
-#   docker compose -f docker-compose.macvlan.yml up -d --build
-#   docker compose -f docker-compose.macvlan.yml logs
+# NODE_RED_URL should be Node-RED's macvlan IP (container DNS names are not
+# reliable across separately-created stacks on macvlan).
 
 services:
   node-red-mcp:
@@ -42,10 +41,5 @@ volumes:
 
 networks:
   lan:
-    driver: macvlan
-    driver_opts:
-      parent: ${MACVLAN_PARENT}
-    ipam:
-      config:
-        - subnet: ${MACVLAN_SUBNET}
-          gateway: ${MACVLAN_GATEWAY}
+    external: true
+    name: ${MACVLAN_NETWORK}

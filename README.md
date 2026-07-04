@@ -23,7 +23,7 @@ Repository: [adub08/node-red-mcp](https://github.com/adub08/node-red-mcp)
 | Host | Linux only | Any (incl. Windows/Mac Docker Desktop) |
 | Client IP seen by allowlist | Real LAN address | Docker gateway (`172.x`) |
 | Good for | Always-on server, LAN-wide access | Development, single-machine testing |
-| Compose file | `docker-compose.macvlan.yml` | `docker-compose.yml` |
+| Compose file | `docker-compose.macvlan.yml` (create network) or `docker-compose.macvlan-external.yml` (join existing) | `docker-compose.yml` |
 
 ## Production (Linux macvlan) — recommended
 
@@ -31,30 +31,60 @@ Gives the container its own LAN IP. Clients connect to that IP directly, so the 
 
 Requires a Linux Docker host (not Docker Desktop) and an unused static IP on your LAN.
 
+Two variants:
+
+| | Compose file | When |
+|--|--|--|
+| **Create** a macvlan network | `docker-compose.macvlan.yml` | No macvlan network exists yet for your subnet |
+| **Join** an existing macvlan network | `docker-compose.macvlan-external.yml` | Node-RED (or anything else) already has a macvlan network on that subnet |
+
+Docker allows only **one** network per address pool. If one already exists, creating a second fails with `Pool overlaps with other one on this address space` — use the **join** variant instead.
+
 ### 1. Configure `.env`
 
 ```bash
 cp .env.example .env
 ```
 
-Set at least:
+Both variants:
 
 | Variable | Example | Notes |
 |----------|---------|--------|
-| `MACVLAN_PARENT` | `eth0` | Host NIC (`ip -br link`) |
-| `MACVLAN_SUBNET` | `192.168.1.0/24` | LAN subnet |
-| `MACVLAN_GATEWAY` | `192.168.1.1` | LAN gateway |
 | `MACVLAN_IP` | `192.168.1.50` | Unused static IP for this container |
 | `MCP_PUBLIC_HOST` | `192.168.1.50` | Same as `MACVLAN_IP` (or DNS pointing at it) |
 | `MCP_PUBLIC_PORT` | `3000` | Listen port (no host port publish) |
 | `NODE_RED_URL` | `http://192.168.1.10:1880` | Address **reachable from the container** |
 | `NODE_RED_TOKEN` | … | Node-RED Admin API token ([how to get one](#getting-a-node-red-access-token)) |
 
+Create variant only:
+
+| Variable | Example | Notes |
+|----------|---------|--------|
+| `MACVLAN_PARENT` | `eth0` | Host NIC (`ip -br link`) |
+| `MACVLAN_SUBNET` | `192.168.1.0/24` | LAN subnet |
+| `MACVLAN_GATEWAY` | `192.168.1.1` | LAN gateway |
+
+Join variant only:
+
+| Variable | Example | Notes |
+|----------|---------|--------|
+| `MACVLAN_NETWORK` | `nodered_macvlan` | Existing network name — `docker network ls` (driver `macvlan`) |
+
 ### 2. Start
+
+Create variant:
 
 ```bash
 docker compose -f docker-compose.macvlan.yml up -d --build
 docker compose -f docker-compose.macvlan.yml logs
+```
+
+Join variant (Node-RED already on macvlan):
+
+```bash
+docker network ls   # find the macvlan network name, set MACVLAN_NETWORK
+docker compose -f docker-compose.macvlan-external.yml up -d --build
+docker compose -f docker-compose.macvlan-external.yml logs
 ```
 
 Logs (example):
@@ -84,8 +114,10 @@ Your workstation’s LAN IP must be in the allowlist.
 
 Macvlan containers often **cannot** reach the Docker host’s bridge-published ports. Point `NODE_RED_URL` at:
 
-- Node-RED’s own LAN IP/port, or
-- Another container on a shared **user-defined** network (uncomment `node-red-net` in `docker-compose.macvlan.yml` and set `DOCKER_NETWORK` / `NODE_RED_URL=http://<service>:1880`).
+- Node-RED’s own **macvlan LAN IP** (most reliable — if Node-RED is on the same macvlan, both are LAN peers), or
+- Node-RED’s own LAN IP/port if it runs outside Docker.
+
+If Node-RED is on macvlan and node-red-mcp is on a bridge network, traffic hairpins through the host and **times out** — put both on the same macvlan (join variant) instead.
 
 ### Host cannot ping the macvlan IP
 
@@ -202,11 +234,11 @@ If `config.json` already has `nodeRedTokenEnc` and the key is missing or wrong, 
 | `MCP_HTTP_PORT` | Listen port inside the container (default `3000`) |
 | `MCP_PUBLIC_HOST` | Host shown in logs/settings URLs |
 | `MCP_PUBLIC_PORT` | Port shown in logs/settings URLs |
-| `DOCKER_NETWORK` | Optional user-defined network name to join for container DNS to Node-RED |
 | `MACVLAN_PARENT` | Host NIC for macvlan (production) |
 | `MACVLAN_SUBNET` | LAN subnet (production) |
 | `MACVLAN_GATEWAY` | LAN gateway (production) |
-| `MACVLAN_IP` | Static LAN IP for the container (production) |
+| `MACVLAN_IP` | Static LAN IP for the container (production, both variants) |
+| `MACVLAN_NETWORK` | Existing macvlan network name to join (production, join variant) |
 | `CF_ACCESS_TEAM_DOMAIN` | Cloudflare Access team domain |
 | `CF_ACCESS_AUD` | Cloudflare Access AUD tag |
 
