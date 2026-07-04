@@ -1,0 +1,37 @@
+services:
+  node-red-mcp:
+    build: .
+    # Local tag by default. For GHCR: IMAGE_NAME=ghcr.io/adub08/node-red-mcp:2.0.0
+    image: ${IMAGE_NAME:-node-red-mcp:2.0.0}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3001:3000"
+    volumes:
+      - node-red-mcp-data:/data
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      # Default: Node-RED published on the host. For container DNS, set NODE_RED_URL
+      # to http://<service>:1880 and attach that stack's user-defined network below.
+      NODE_RED_URL: ${NODE_RED_URL:-http://host.docker.internal:1880}
+      NODE_RED_TOKEN: ${NODE_RED_TOKEN:-}
+      NR_MCP_ENCRYPTION_KEY: ${NR_MCP_ENCRYPTION_KEY:-}
+      MCP_TRANSPORT: http
+      MCP_HTTP_PORT: "3000"
+      MCP_PUBLIC_HOST: ${MCP_PUBLIC_HOST:-127.0.0.1}
+      MCP_PUBLIC_PORT: ${MCP_PUBLIC_PORT:-3001}
+      # Optional Cloudflare Access origin validation:
+      # CF_ACCESS_TEAM_DOMAIN: yourteam.cloudflareaccess.com
+      # CF_ACCESS_AUD: your-access-aud-tag
+    networks:
+      - default
+      # Uncomment and set name to join an existing user-defined network (not "bridge"):
+      # - node-red-net
+
+volumes:
+  node-red-mcp-data:
+
+# networks:
+#   node-red-net:
+#     external: true
+#     name: nodered_default

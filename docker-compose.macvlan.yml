@@ -1,0 +1,53 @@
+# Production (Linux): macvlan — container owns a LAN IP, clients connect directly.
+# req.socket.remoteAddress is the real client LAN address (no Docker NAT).
+#
+# Not for Docker Desktop. Requires an unused static IP on your LAN.
+#
+#   cp .env.example .env   # set MACVLAN_* and MCP_PUBLIC_HOST
+#   docker compose -f docker-compose.macvlan.yml up -d --build
+#   docker compose -f docker-compose.macvlan.yml logs
+
+services:
+  node-red-mcp:
+    build: .
+    # Local tag by default. For GHCR: IMAGE_NAME=ghcr.io/adub08/node-red-mcp:2.0.0
+    image: ${IMAGE_NAME:-node-red-mcp:2.0.0}
+    restart: unless-stopped
+    # No `ports:` — traffic hits MACVLAN_IP:MCP_HTTP_PORT on the LAN.
+    volumes:
+      - node-red-mcp-data:/data
+    environment:
+      NODE_RED_URL: ${NODE_RED_URL}
+      NODE_RED_TOKEN: ${NODE_RED_TOKEN:-}
+      NR_MCP_ENCRYPTION_KEY: ${NR_MCP_ENCRYPTION_KEY:-}
+      MCP_TRANSPORT: http
+      MCP_HTTP_PORT: ${MCP_HTTP_PORT:-3000}
+      # Set MCP_PUBLIC_HOST to MACVLAN_IP (or a DNS name pointing at it).
+      MCP_PUBLIC_HOST: ${MCP_PUBLIC_HOST}
+      MCP_PUBLIC_PORT: ${MCP_PUBLIC_PORT:-3000}
+      # Optional Cloudflare Access origin validation:
+      # CF_ACCESS_TEAM_DOMAIN: yourteam.cloudflareaccess.com
+      # CF_ACCESS_AUD: your-access-aud-tag
+    networks:
+      lan:
+        ipv4_address: ${MACVLAN_IP}
+      # Optional: same user-defined network as Node-RED for container DNS.
+      # Uncomment and set DOCKER_NETWORK; set NODE_RED_URL=http://<service>:1880
+      # node-red-net:
+
+volumes:
+  node-red-mcp-data:
+
+networks:
+  lan:
+    driver: macvlan
+    driver_opts:
+      parent: ${MACVLAN_PARENT}
+    ipam:
+      config:
+        - subnet: ${MACVLAN_SUBNET}
+          gateway: ${MACVLAN_GATEWAY}
+
+  # node-red-net:
+  #   external: true
+  #   name: ${DOCKER_NETWORK}

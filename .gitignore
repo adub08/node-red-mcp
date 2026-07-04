@@ -1,0 +1,13 @@
+node_modules/
+.env
+.env.local
+.env.*.local
+data/
+logs/
+*.log
+.DS_Store
+coverage/
+.cursor/
+node-red-imports/
+Node-Red-config.json
+*.ps1.bak

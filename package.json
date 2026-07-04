@@ -1,0 +1,35 @@
+{
+  "name": "node-red-mcp",
+  "version": "2.0.0",
+  "description": "Model Context Protocol server for Node-RED with admin UI, permissions, and IP allowlisting",
+  "license": "MIT",
+  "main": "lib/server.mjs",
+  "type": "module",
+  "bin": {
+    "node-red-mcp-server": "./bin/node-red-mcp-server.mjs"
+  },
+  "scripts": {
+    "test": "node --test",
+    "start": "node ./bin/node-red-mcp-server.mjs --http 3000"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "node-red",
+    "mcp",
+    "model-context-protocol"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adub08/node-red-mcp.git"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.11.0",
+    "axios": "^1.9.0",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "jose": "^5.10.0",
+    "zod": "^3.24.4"
+  }
+}

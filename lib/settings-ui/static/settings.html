@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Node-RED MCP Settings</title>
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <header>
+    <h1>Node-RED MCP</h1>
+    <p class="subtitle">Admin settings</p>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button type="button" class="tab active" data-tab="overview">Overview</button>
+    <button type="button" class="tab" data-tab="connection">Connection</button>
+    <button type="button" class="tab" data-tab="tools">Tools</button>
+    <button type="button" class="tab" data-tab="security">Security</button>
+    <button type="button" class="tab" data-tab="advanced">Advanced</button>
+  </nav>
+
+  <main>
+    <section id="panel-overview" class="panel active">
+      <div id="overview-status" class="card">Loading…</div>
+      <div class="card">
+        <h2>Endpoints</h2>
+        <label>Settings URL <input id="settings-url" type="text" readonly></label>
+        <label>MCP URL <input id="mcp-url" type="text" readonly></label>
+        <button type="button" id="copy-settings-url">Copy settings URL</button>
+      </div>
+    </section>
+
+    <section id="panel-connection" class="panel">
+      <div class="card">
+        <h2>Node-RED connection</h2>
+        <form id="connection-form">
+          <label>Node-RED URL <input name="nodeRedUrl" type="url" required></label>
+          <label>Access token <input name="nodeRedToken" type="password" placeholder="Leave blank to keep current"></label>
+          <button type="submit">Save &amp; test</button>
+        </form>
+        <p id="connection-result" class="hint"></p>
+      </div>
+    </section>
+
+    <section id="panel-tools" class="panel">
+      <div class="card">
+        <label class="toggle-row">
+          <input type="checkbox" id="read-only-mode">
+          <span>Read-only mode (block all write tools)</span>
+        </label>
+      </div>
+      <div class="card" id="tool-groups"></div>
+      <div class="card">
+        <h2>Individual tools</h2>
+        <div id="tool-list" class="tool-list"></div>
+        <button type="button" id="save-tools">Save tool settings</button>
+        <p id="tools-result" class="hint" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section id="panel-security" class="panel">
+      <div class="card">
+        <h2>IP allowlist</h2>
+        <p class="hint">Only clients from these CIDR ranges can reach the MCP and settings endpoints.</p>
+        <p class="hint">Your current IP: <code id="client-ip" class="inline-code">…</code></p>
+        <ul id="ip-list"></ul>
+        <div class="row">
+          <input id="new-cidr" type="text" placeholder="e.g. 192.168.1.10 or 192.168.1.0/24">
+          <button type="button" id="add-cidr">Add</button>
+        </div>
+        <button type="button" id="save-ip">Save allowlist</button>
+        <p id="ip-result" class="hint" aria-live="polite"></p>
+      </div>
+      <div class="card">
+        <h2>Secret path</h2>
+        <p class="hint">Treat the secret URL like a password. Regenerating invalidates old bookmarks and Cursor config.</p>
+        <code id="secret-path"></code>
+        <button type="button" id="regenerate-secret" class="danger">Regenerate secret path</button>
+      </div>
+      <div class="card">
+        <h2>Cloudflare Access</h2>
+        <p id="cf-access-status" class="hint"></p>
+      </div>
+    </section>
+
+    <section id="panel-advanced" class="panel">
+      <div class="card">
+        <label class="toggle-row">
+          <input type="checkbox" id="verbose-mode">
+          <span>Verbose logging</span>
+        </label>
+        <button type="button" id="save-advanced">Save</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="settings.js"></script>
+</body>
+</html>
