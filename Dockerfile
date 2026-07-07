@@ -3,8 +3,8 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY package.json ./
-RUN npm install --omit=dev --no-package-lock
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
 
 COPY bin ./bin
 COPY lib ./lib
