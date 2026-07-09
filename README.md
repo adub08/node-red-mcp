@@ -314,8 +314,6 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 ---
 
 ## 🙏 Acknowledgments
-
+This was very lately based the following projects:
 - **[CamSoper/node-red-mcp-server](https://github.com/CamSoper/node-red-mcp-server)** — the original MCP server this project is forked from
-- **[Node-RED](https://nodered.org/)** — low-code programming for event-driven applications
 - **[ha-mcp](https://github.com/homeassistant-ai/ha-mcp)** — inspiration for the admin UI, permissions, and security model
-- **[Model Context Protocol](https://modelcontextprotocol.io/)** — standardized AI-application communication
