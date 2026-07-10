@@ -7,6 +7,10 @@ A Model Context Protocol (MCP) server for Node-RED with an admin web UI, tool pe
 Fork of [CamSoper/node-red-mcp-server](https://github.com/CamSoper/node-red-mcp-server), extended with an admin UI, permissions, and IP allowlisting.
 
 ---
+## Disclaimer:
+This project was entirely Vibe coded, I take no responsbility for how it works or what it does. The project keeps security as a priority but it relies on assumptions, and should never be used to control any _Critical_ Node-Red instances EVER. Security contraints, assumptions and a fixes are documented under SECURITY-REVIEW.md. Any PRs to improve, or enhance the project are highly welcome.
+
+---
 
 ## 🚀 Get Started
 
@@ -314,6 +318,6 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 ---
 
 ## 🙏 Acknowledgments
-This was very lately based the following projects:
+This was very largely based the following brillaint projects:
 - **[CamSoper/node-red-mcp-server](https://github.com/CamSoper/node-red-mcp-server)** — the original MCP server this project is forked from
 - **[ha-mcp](https://github.com/homeassistant-ai/ha-mcp)** — inspiration for the admin UI, permissions, and security model
