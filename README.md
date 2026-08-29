@@ -35,7 +35,7 @@ Just talk to your AI assistant naturally:
 | **📊 Inspect** | Runtime settings and diagnostics (sensitive values redacted), installed node modules |
 | **🔒 Safety** | Read-only mode (default on), per-tool and per-group enable/disable, MCP risk annotations (`readOnlyHint`/`destructiveHint`) |
 | **🌐 Access control** | Secret URL path, CIDR IP allowlist, optional Cloudflare Access JWT |
-| **⚙️ Admin UI** | Web settings panel: Overview, Connection, Tools, Security, Advanced |
+| **⚙️ Admin UI** | Web settings panel: Overview, Connection, Tools, Security, Diagnostics, Advanced |
 ## 🚀 Get Started
 
 The recommended way to run node-red-mcp is **Docker Compose**. Config persists in a `/data` volume, and a secret URL is generated on first boot.
