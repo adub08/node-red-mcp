@@ -197,3 +197,37 @@ code {
   margin-bottom: 0.75rem;
   font-size: 0.8rem;
 }
+
+.diag-grid {
+  display: grid;
+  grid-template-columns: minmax(8rem, 12rem) 1fr;
+  gap: 0.4rem 1rem;
+  margin: 1rem 0 0;
+}
+
+.diag-grid dt {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.diag-grid dd {
+  margin: 0;
+  font-size: 0.9rem;
+  word-break: break-word;
+}
+
+.diag-tools {
+  display: grid;
+  gap: 0.25rem;
+  max-height: 16rem;
+  overflow-y: auto;
+  font-size: 0.85rem;
+}
+
+.diag-tools .row-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.25rem 0;
+  border-bottom: 1px solid var(--border);
+}
