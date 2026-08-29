@@ -17,6 +17,7 @@
     <button type="button" class="tab" data-tab="connection">Connection</button>
     <button type="button" class="tab" data-tab="tools">Tools</button>
     <button type="button" class="tab" data-tab="security">Security</button>
+    <button type="button" class="tab" data-tab="diagnostics">Diagnostics</button>
     <button type="button" class="tab" data-tab="advanced">Advanced</button>
   </nav>
 
@@ -81,6 +82,20 @@
       <div class="card">
         <h2>Cloudflare Access</h2>
         <p id="cf-access-status" class="hint"></p>
+      </div>
+    </section>
+
+    <section id="panel-diagnostics" class="panel">
+      <div class="card">
+        <h2>Connection probe</h2>
+        <p class="hint">Probes the Node-RED Admin API (<code class="inline-code">/settings</code>), not the editor page — so a bad token shows as an auth failure instead of a false success.</p>
+        <button type="button" id="run-diagnostics">Run diagnostics</button>
+        <p id="diagnostics-result" class="hint" aria-live="polite"></p>
+        <dl id="diagnostics-summary" class="diag-grid"></dl>
+      </div>
+      <div class="card">
+        <h2>Tool permissions</h2>
+        <div id="diagnostics-tools" class="hint">Run diagnostics to load.</div>
       </div>
     </section>
 
