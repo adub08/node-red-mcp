@@ -11,7 +11,31 @@ Fork of [CamSoper/node-red-mcp-server](https://github.com/CamSoper/node-red-mcp-
 This project was entirely Vibe coded, I take no responsbility for how it works or what it does. The project keeps security as a priority but it relies on assumptions, and should never be used to control any _Critical_ Node-Red instances EVER. Security contraints, assumptions and a fixes are documented under SECURITY-REVIEW.md. Any PRs to improve, or enhance the project are highly welcome.
 
 ---
+## 💬 What Can You Do With It?
 
+Just talk to your AI assistant naturally:
+
+| You Say | What Happens |
+|---------|--------------|
+| *"Show me an overview of my Node-RED flows"* | Summarizes every tab and its node types |
+| *"Create a flow that logs a message every morning at 7"* | Builds a new tab with an inject node wired to your logic |
+| *"Find every MQTT node across my flows"* | Searches all flows by node type and returns the matches |
+| *"Trigger the 'test payload' inject node"* | Fires the inject node as if you clicked its button |
+| *"Why isn't my motion-light flow working? Check the wiring"* | Reads the flow JSON and spots broken wires or misconfigured nodes |
+| *"Rename that tab and clean up the unused nodes"* | Updates the flow in place |
+
+---
+
+## ✨ Features
+
+| Category | Capabilities |
+|----------|--------------|
+| **🔍 Read & explore** | Full flow JSON, per-tab views, formatted summaries, node search by type/property |
+| **🔧 Build & edit** | Create, update, and delete flows; start/stop the runtime; trigger inject nodes |
+| **📊 Inspect** | Runtime settings and diagnostics (sensitive values redacted), installed node modules |
+| **🔒 Safety** | Read-only mode (default on), per-tool and per-group enable/disable, MCP risk annotations (`readOnlyHint`/`destructiveHint`) |
+| **🌐 Access control** | Secret URL path, CIDR IP allowlist, optional Cloudflare Access JWT |
+| **⚙️ Admin UI** | Web settings panel: Overview, Connection, Tools, Security, Advanced |
 ## 🚀 Get Started
 
 The recommended way to run node-red-mcp is **Docker Compose**. Config persists in a `/data` volume, and a secret URL is generated on first boot.
@@ -68,32 +92,6 @@ Open the **Settings UI** in a browser to manage the connection, enable/disable t
 The quick start above uses the **Local / Docker Desktop** profile. For an always-on LAN server where the IP allowlist sees real client addresses, use the [macvlan deployment](#-production-linux-macvlan--recommended) below.
 
 ---
-
-## 💬 What Can You Do With It?
-
-Just talk to your AI assistant naturally:
-
-| You Say | What Happens |
-|---------|--------------|
-| *"Show me an overview of my Node-RED flows"* | Summarizes every tab and its node types |
-| *"Create a flow that logs a message every morning at 7"* | Builds a new tab with an inject node wired to your logic |
-| *"Find every MQTT node across my flows"* | Searches all flows by node type and returns the matches |
-| *"Trigger the 'test payload' inject node"* | Fires the inject node as if you clicked its button |
-| *"Why isn't my motion-light flow working? Check the wiring"* | Reads the flow JSON and spots broken wires or misconfigured nodes |
-| *"Rename that tab and clean up the unused nodes"* | Updates the flow in place |
-
----
-
-## ✨ Features
-
-| Category | Capabilities |
-|----------|--------------|
-| **🔍 Read & explore** | Full flow JSON, per-tab views, formatted summaries, node search by type/property |
-| **🔧 Build & edit** | Create, update, and delete flows; start/stop the runtime; trigger inject nodes |
-| **📊 Inspect** | Runtime settings and diagnostics (sensitive values redacted), installed node modules |
-| **🔒 Safety** | Read-only mode (default on), per-tool and per-group enable/disable, MCP risk annotations (`readOnlyHint`/`destructiveHint`) |
-| **🌐 Access control** | Secret URL path, CIDR IP allowlist, optional Cloudflare Access JWT |
-| **⚙️ Admin UI** | Web settings panel: Overview, Connection, Tools, Security, Advanced |
 
 <details>
 <summary><b>Complete Tool List (21 tools)</b></summary>
