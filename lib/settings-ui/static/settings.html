@@ -58,6 +58,18 @@
         <button type="button" id="save-tools">Save tool settings</button>
         <p id="tools-result" class="hint" aria-live="polite"></p>
       </div>
+      <div class="card">
+        <h2>Restrict writable flows</h2>
+        <p class="hint">When enabled, <code class="inline-code">update-flow</code> and <code class="inline-code">delete-flow</code> only work for checked tabs. Off = all flows writable (tool permissions still apply). Does not affect <code class="inline-code">update-flows</code> (full replace).</p>
+        <label class="toggle-row">
+          <input type="checkbox" id="restrict-writable-flows">
+          <span>Restrict writable flows to the list below</span>
+        </label>
+        <div id="flow-permissions-list" class="tool-list"></div>
+        <p id="flow-permissions-hint" class="hint"></p>
+        <button type="button" id="save-flow-permissions">Save flow restrictions</button>
+        <p id="flow-permissions-result" class="hint" aria-live="polite"></p>
+      </div>
     </section>
 
     <section id="panel-security" class="panel">
